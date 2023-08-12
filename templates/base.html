@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>{% block title %} Title{% endblock %}</title>
+</head>
+
+<body>
+
+  <div class="container mt-2">
+    <div class="row">
+        <div class="col-md-2">
+            <!-- Home link on the left -->
+            <a href="{{ url_for('home') }}">Home</a>
+        </div>
+        <div class="col-md-8"></div>
+        <div class="col-md-2 d-flex align-items-center justify-content-end">
+            <!-- Welcome message and Logout link -->
+            <span>Welcome,  </span>
+            <span class="d-inline-flex align-items-center">
+                {% if session['username'] %}
+                    {{ session['username'] }}!<br> 
+                    <a href="{{ url_for('logout') }}" class="ml-2">Logout</a>
+                {% else %}
+                     Guest!
+                {% endif %}
+            </span>
+        </div>
+    </div>
+</div>
+
+
+<div class="container mt-4">
+    <!-- Flash message display area -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% block content %}
+    <!-- Default content goes here if any -->
+    {% endblock %}
+</div>
+
+<!-- Bootstrap JS and jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
